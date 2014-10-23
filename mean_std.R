@@ -1,0 +1,36 @@
+## STEP 2 - Extracts only the measurements on the mean and standard deviation 
+## for each measurement. The script is at the same level of UCI HAR Dataset
+
+## Extract and save the mean of each measurement. X_all is a data set of
+## 561 variables, 10299 observations. features.txt is a description
+## of the 561 variables (columns) of X_all.txt.
+## y_all.txt includes the activity for each of the 10299 observations.
+## activity_labels is the description of each activity
+feat <- read.table(".\\UCI HAR Dataset\\features.txt")
+ifeatmean <- grep("mean", feat$V2)
+ifeatstd <- grep("std", feat$V2)
+X_all <- read.table(".\\tidydata\\all\\X_all.txt")
+labels <- read.table(".\\tidydata\\all\\y_all.txt")
+act_labels <- read.table(".\\UCI HAR Dataset\\activity_labels.txt")
+labels_name <- as.data.frame(as.character(act_labels[labels[,1],"V2"]))
+colnames(labels_name) <- "Activity"
+X_mean <- X_all[,ifeatmean]
+X_std <- X_all[,ifeatstd]
+names(X_mean) <- feat[ifeatmean,"V2"]
+names(X_std) <- feat[ifeatstd,"V2"]
+subject_all <- read.table(".\\tidydata\\all\\subject_all.txt")
+X_mean <- cbind(labels_name,X_mean)
+X_std <- cbind(labels_name,X_std)
+X_mean_avg <- aggregate(X_mean[,2:47], by = list(X_mean$Activity, subject_all[,"V1"]), mean)
+X_std_avg <- aggregate(X_std[,2:34], by = list(X_std$Activity, subject_all[,"V1"]), mean)
+names(X_mean_avg)[1:2] <- c("Activity", "Subject")
+names(X_std_avg)[1:2] <- c("Activity", "Subject")
+write.table(X_mean_avg, file = ".\\tidydataset\\X_mean_avg.txt", row.name=FALSE)
+write.table(X_std_avg, file = ".\\tidydataset\\X_std_avg.txt", row.name=FALSE)
+
+
+
+
+
+
+
