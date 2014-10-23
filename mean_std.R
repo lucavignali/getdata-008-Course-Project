@@ -40,7 +40,7 @@ names(X_mean_avg)[1:2] <- c("Activity", "Subject")
 names(X_std_avg)[1:2] <- c("Activity", "Subject")
 
 ## Write the obtained data sets in two files using the required write.table and
-## row,name settings.
+## row.name settings.
 write.table(X_mean_avg, file = ".\\tidydataset\\X_mean_avg.txt", row.name=FALSE)
 write.table(X_std_avg, file = ".\\tidydataset\\X_std_avg.txt", row.name=FALSE)
 
